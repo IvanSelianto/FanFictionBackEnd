@@ -5,7 +5,6 @@ import com.fanfiction.payload.request.SignupRequest;
 import com.fanfiction.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +35,7 @@ public class AuthController {
     @GetMapping("/activate/{code}")
     public void activate(@PathVariable String code, HttpServletResponse response) throws IOException {
         userService.activateUser(code);
-        response.sendRedirect("http://localhost:4200/");
+        response.sendRedirect("https://fanfictionang.herokuapp.com/");
     }
 
 }
