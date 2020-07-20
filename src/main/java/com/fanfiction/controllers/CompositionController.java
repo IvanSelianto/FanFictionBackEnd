@@ -46,7 +46,7 @@ public class CompositionController {
 
     @GetMapping("/allcompositions")
     public List<Composition> allCompositions() {
-        List<Composition> sortedCompositionsByPublicationDate = compositionService.getAllCompositions().stream()
+        return compositionService.getAllCompositions().stream()
                 .sorted((composition1, composition2) -> {
                     try {
                         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(composition2.getPublicationDate())
@@ -56,7 +56,6 @@ public class CompositionController {
                         return 0;
                     }
                 }).collect(Collectors.toList());
-        return sortedCompositionsByPublicationDate;
     }
 
 }
