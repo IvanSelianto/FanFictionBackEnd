@@ -10,4 +10,5 @@ public class FanfictionApplication {
 		SpringApplication.run(FanfictionApplication.class, args);
 	}
 
+
 }
