@@ -34,19 +34,19 @@ public class AdminController {
     @GetMapping("/blockuser/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public void blockUser(@PathVariable Long userId) {
-        adminService.setRole(userId, new Role(3, ERole.ROLE_UNDEFINED_USER));
+        adminService.setRole(userId, ERole.ROLE_UNDEFINED_USER);
     }
 
     @GetMapping("/setuserrole/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public void unblockUser(@PathVariable Long userId) {
-        adminService.setRole(userId, new Role(2, ERole.ROLE_USER));
+        adminService.setRole(userId, ERole.ROLE_USER);
     }
 
     @GetMapping("/setadminrole/{userId}")
     @PreAuthorize("hasRole('ADMIN')")
     public void setAdminRole(@PathVariable Long userId) {
-        adminService.setRole(userId, new Role(1, ERole.ROLE_ADMIN));
+        adminService.setRole(userId, ERole.ROLE_ADMIN);
     }
 
     @GetMapping("getuserbyid/{userId}")

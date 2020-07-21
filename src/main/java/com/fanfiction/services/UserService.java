@@ -9,6 +9,7 @@ import com.fanfiction.payload.request.EditNameRequest;
 import com.fanfiction.payload.request.LoginRequest;
 import com.fanfiction.payload.request.SignupRequest;
 import com.fanfiction.payload.response.MessageResponse;
+import com.fanfiction.repository.RoleRepository;
 import com.fanfiction.repository.UserRepository;
 import com.fanfiction.security.jwt.JwtUtils;
 import com.fanfiction.security.securityservices.UserDetailsImpl;
@@ -28,9 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,6 +45,8 @@ public class UserService implements UserDetailsService {
     private JwtUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    RoleRepository roleRepository;
 
     public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -88,7 +89,12 @@ public class UserService implements UserDetailsService {
     }
 
     private void saveUser(User user) {
-        user.setRoles(Collections.singleton(new Role(3, ERole.ROLE_UNDEFINED_USER)));
+
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByName(ERole.ROLE_UNDEFINED_USER).get());
+        user.setRoles(roles);
+
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActivationCode(UUID.randomUUID().toString());
         userRepository.save(user);
@@ -104,8 +110,9 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             return false;
         }
-        user.getRoles().clear();
-        user.getRoles().add(new Role(2, ERole.ROLE_USER));
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleRepository.findByName(ERole.ROLE_UNDEFINED_USER).get());
+        user.setRoles(roles);
         user.setActivationCode(null);
         userRepository.save(user);
         return true;
