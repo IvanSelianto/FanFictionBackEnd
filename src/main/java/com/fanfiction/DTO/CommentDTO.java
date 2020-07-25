@@ -7,13 +7,12 @@ public class CommentDTO {
     private Long id;
     private User commentAuthor;
     private String text;
-    private Composition composition;
+    private CompositionDTO compositionDTO;
 
-    public CommentDTO(Long id, User commentAuthor, String text, Composition composition) {
+    public CommentDTO(Long id, User commentAuthor, String text) {
         this.id = id;
         this.commentAuthor = commentAuthor;
         this.text = text;
-        this.composition = composition;
     }
 
     public Long getId() {
@@ -40,11 +39,21 @@ public class CommentDTO {
         this.text = text;
     }
 
-    public Composition getComposition() {
-        return composition;
+    public CompositionDTO getCompositionDTO() {
+        return compositionDTO;
     }
 
-    public void setComposition(Composition composition) {
-        this.composition = composition;
+    public void setCompositionDTO(CompositionDTO compositionDTO) {
+        this.compositionDTO = compositionDTO;
+    }
+
+    @Override
+    public String toString() {
+        return "CommentDTO{" +
+                "id=" + id +
+                ", commentAuthor=" + commentAuthor +
+                ", text='" + text + '\'' +
+                ", compositionDTO=" + compositionDTO +
+                '}';
     }
 }

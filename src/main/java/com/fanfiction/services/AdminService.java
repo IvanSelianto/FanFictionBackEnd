@@ -1,11 +1,8 @@
 package com.fanfiction.services;
 
-import com.fanfiction.models.ERole;
-import com.fanfiction.models.Role;
-import com.fanfiction.models.User;
+import com.fanfiction.models.*;
 import com.fanfiction.DTO.UserJwtDTO;
-import com.fanfiction.repository.RoleRepository;
-import com.fanfiction.repository.UserRepository;
+import com.fanfiction.repository.*;
 import com.fanfiction.security.jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,13 +21,26 @@ public class AdminService {
     private JwtUtils jwtUtils;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private CompositionRepository compositionRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    ChapterRepository chapterRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+        if (!(userRepository.findById(userId).get().getRoles().contains(roleRepository.findByName(ERole.ROLE_ADMIN).get()))) {
+            List<Composition> compositionsByAuthorId = compositionRepository.getCompositionsByAuthorId(userId);
+            compositionsByAuthorId.forEach(composition -> chapterRepository.deleteAllByComposition(composition));
+            commentRepository.deleteAll(commentRepository.findAllByCommentAuthorId(userId));
+            compositionRepository.deleteAll(compositionsByAuthorId);
+            userRepository.deleteById(userId);
+        }
+
     }
 
     public void setRole(Long userId, ERole role) {

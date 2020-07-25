@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface CompositionRepository extends JpaRepository<Composition, Long> {
     List<Composition> getCompositionsByAuthorId(Long authorId);
+
+
+
 }

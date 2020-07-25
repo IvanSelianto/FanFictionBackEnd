@@ -1,8 +1,6 @@
 package com.fanfiction.controllers;
 
 import com.fanfiction.DTO.CommentDTO;
-import com.fanfiction.models.Comment;
-import com.fanfiction.payload.request.CommentRequest;
 import com.fanfiction.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -13,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/api/fanfic")
 public class CommentController {
 
     private final SimpMessagingTemplate template;
@@ -34,7 +32,8 @@ public class CommentController {
 
     @PostMapping("/addcomment")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public void addComment(@RequestBody CommentRequest commentRequest, Authentication authentication) {
-        this.template.convertAndSend("/message", commentService.addComment(commentRequest, authentication));
+    public void addComment(@RequestBody CommentDTO commentDTO, Authentication authentication) {
+        System.out.println(commentDTO.toString());
+        this.template.convertAndSend("/message", commentService.addComment(commentDTO, authentication));
     }
 }

@@ -1,16 +1,31 @@
 package com.fanfiction.DTO;
 
+import com.fanfiction.models.User;
+
+import java.util.Set;
+
 public class CompositionDTO {
     private Long compositionId;
     private String title;
     private String description;
-    private int chaptersAmount;
+    private Set<GenresNewCompositionDTO> compositionGenres;
+    private User author;
 
-    public CompositionDTO(Long compositionId, String title, String description, int chaptersAmount) {
+    public CompositionDTO(User author, String title, String description, Set<GenresNewCompositionDTO> compositionGenres, Long compositionId) {
         this.compositionId = compositionId;
         this.title = title;
         this.description = description;
-        this.chaptersAmount = chaptersAmount;
+        this.compositionGenres = compositionGenres;
+        this.author = author;
+    }
+
+
+    public Long getCompositionId() {
+        return compositionId;
+    }
+
+    public void setCompositionId(Long compositionId) {
+        this.compositionId = compositionId;
     }
 
     public String getTitle() {
@@ -29,19 +44,30 @@ public class CompositionDTO {
         this.description = description;
     }
 
-    public Long getCompositionId() {
-        return compositionId;
+    public Set<GenresNewCompositionDTO> getCompositionGenres() {
+        return compositionGenres;
     }
 
-    public void setCompositionId(Long compositionId) {
-        this.compositionId = compositionId;
+    public void setCompositionGenres(Set<GenresNewCompositionDTO> compositionGenres) {
+        this.compositionGenres = compositionGenres;
     }
 
-    public int getChaptersAmount() {
-        return chaptersAmount;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setChaptersAmount(int chaptersAmount) {
-        this.chaptersAmount = chaptersAmount;
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "CompositionDTO{" +
+                "compositionId=" + compositionId +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", compositionGenres=" + compositionGenres +
+                ", author=" + author +
+                '}';
     }
 }

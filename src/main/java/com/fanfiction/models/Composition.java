@@ -1,11 +1,15 @@
 package com.fanfiction.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -35,6 +39,14 @@ public class Composition {
         this.compositionGenres = compositionGenres;
     }
 
+    public Composition(Long id, @Size(max = 510) String description, @Size(max = 100) String title, User author, Set<Genre> compositionGenres) {
+        this.id = id;
+        this.description = description;
+        this.title = title;
+        this.author = author;
+        this.compositionGenres = compositionGenres;
+    }
+
     public Composition() {
     }
 
@@ -45,7 +57,6 @@ public class Composition {
     public void setAuthor(User author) {
         this.author = author;
     }
-
 
     public Set<Genre> getCompositionGenres() {
         return compositionGenres;
@@ -90,6 +101,30 @@ public class Composition {
     @Override
     public String toString() {
         return "Composition{" +
-                "id=" + id + "}";
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", compositionGenres=" + compositionGenres +
+                ", publicationDate='" + publicationDate + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Composition that = (Composition) object;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(author, that.author) &&
+                Objects.equals(compositionGenres, that.compositionGenres) &&
+                Objects.equals(publicationDate, that.publicationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, title, author, compositionGenres, publicationDate);
     }
 }

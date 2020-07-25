@@ -71,6 +71,23 @@
             <version>1.26.0</version>
         </dependency>
 
+        <!--PDF EXPORT-->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.itextpdf.tool</groupId>
+            <artifactId>xmlworker</artifactId>
+            <version>5.5.13.1</version>
+        </dependency>
+
 
         <!--WEB SOCKETS-->
         <dependency>
@@ -93,8 +110,19 @@
             <artifactId>hibernate-search-orm</artifactId>
             <version>5.10.9.Final</version>
         </dependency>
-
+        <!--OAUTH2-->
+        <dependency>
+            <groupId>com.vk.api</groupId>
+            <artifactId>sdk</artifactId>
+            <version>0.5.12</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.30.9</version>
+        </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

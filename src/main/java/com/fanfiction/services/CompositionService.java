@@ -1,9 +1,11 @@
 package com.fanfiction.services;
 
 import com.fanfiction.DTO.CompositionDTO;
+import com.fanfiction.DTO.CompositionHomeDTO;
+import com.fanfiction.DTO.CompositionProfileDTO;
+import com.fanfiction.DTO.GenresNewCompositionDTO;
 import com.fanfiction.models.Composition;
 import com.fanfiction.models.Genre;
-import com.fanfiction.payload.request.CompositionRequest;
 import com.fanfiction.repository.ChapterRepository;
 import com.fanfiction.repository.CompositionRepository;
 import com.fanfiction.repository.GenreRepository;
@@ -13,7 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,37 +31,53 @@ public class CompositionService {
     private ChapterRepository chapterRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private CompositionService compositionService;
 
-    public List<Genre> getAllGenres() {
-        return genreRepository.findAll();
+
+    public List<GenresNewCompositionDTO> getAllGenres() {
+        return genreRepository.findAll().stream().map(genre -> new GenresNewCompositionDTO(genre.getId(), genre.getGenreName())).collect(Collectors.toList());
     }
 
 
-    public Composition saveComposition(CompositionRequest compositionRequest, Authentication authentication) {
-        Set<Genre> compositionGenres = compositionService.getAllGenres()
-                .stream().filter(genre -> compositionRequest.getCompositionGenres().contains(genre.getGenreName())).collect(Collectors.toSet());
+    public Long saveComposition(CompositionDTO compositionDTO, Authentication authentication) {
 
-        Composition composition = new Composition(compositionRequest.getTitle(), compositionRequest.getDescription(), compositionGenres);
+        Composition composition = new Composition(
+                compositionDTO.getTitle(),
+                compositionDTO.getDescription(),
+                compositionDTO.getCompositionGenres().stream()
+                        .map(genresNewCompositionDTO ->
+                                new Genre(genresNewCompositionDTO.getId()
+                                        , genresNewCompositionDTO.getGenreName()))
+                        .collect(Collectors.toSet()));
         composition.setAuthor(userRepository.findByUsername(((UserDetailsImpl) authentication.getPrincipal()).getUsername()).get());
         composition.setPublicationDate(String.valueOf(new java.sql.Timestamp(new Date().getTime())).replaceAll("\\.\\d+", ""));
-        if (compositionRequest.getCompositionId() != null) {
-            composition.setId(compositionRequest.getCompositionId());
+        if (compositionDTO.getCompositionId() != null) {
+            composition.setId(compositionDTO.getCompositionId());
         }
-        return compositionRepository.save(composition);
+        compositionRepository.save(composition);
+
+        return composition.getId();
+
+
     }
 
 
-    public Composition findCompositionById(Long compositionId) {
-        return compositionRepository.findById(compositionId).get();
+    public CompositionDTO findCompositionById(Long compositionId) {
+        Composition composition = compositionRepository.findById(compositionId).get();
+        return new CompositionDTO(
+                composition.getAuthor(),
+                composition.getTitle(),
+                composition.getDescription(),
+                composition.getCompositionGenres().stream()
+                        .map(genre -> new GenresNewCompositionDTO(genre.getId(), genre.getGenreName()))
+                        .collect(Collectors.toSet()),
+                compositionId);
     }
 
-    public List<CompositionDTO> getCompositionsForCurrentUser(Authentication authentication) {
+    public List<CompositionProfileDTO> getCompositionsForCurrentUser(Authentication authentication) {
         return compositionRepository
                 .getCompositionsByAuthorId(userRepository.findByUsername(authentication.getName()).get().getId())
                 .stream().map(composition ->
-                        new CompositionDTO(composition.getId(),
+                        new CompositionProfileDTO(composition.getId(),
                                 composition.getTitle(),
                                 composition.getDescription(),
                                 chapterRepository.findAllByComposition(composition).size()))
@@ -67,8 +88,23 @@ public class CompositionService {
         compositionRepository.deleteById(compositionId);
     }
 
-    public List<Composition> getAllCompositions() {
-        return compositionRepository.findAll();
+    public List<CompositionHomeDTO> getAllCompositions() {
+        return compositionRepository.findAll().stream().map(composition -> new CompositionHomeDTO(
+                composition.getId(),
+                composition.getTitle(),
+                composition.getDescription(),
+                composition.getCompositionGenres(),
+                composition.getPublicationDate()))
+                .sorted((compositionHomeDTO1, compositionHomeDTO2) -> {
+                    try {
+                        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(compositionHomeDTO2.getPublicationDate())
+                                .compareTo(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(compositionHomeDTO1.getPublicationDate()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        return 0;
+                    }
+                }).collect(Collectors.toList());
+
     }
 
 }
