@@ -166,7 +166,7 @@ public class UserService implements UserDetailsService {
         GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(TRANSPORT, JSON_FACTORY,
                 "968324244976-63q9m9n4c267ps7gamlopfct7v45qner.apps.googleusercontent.com"
                 , "qelBn7c0E_nUEOzConvw-YP8"
-                , "4/" + googleCode, "https://fanfictionang.herokuapp.com/auth").execute();
+                , "4/" + googleCode, "https://fanfictionang.herokuapp.com/google/auth").execute();
         GoogleIdToken idToken = tokenResponse.parseIdToken();
         Set<Role> roles = new HashSet<>();
         roles.add(roleRepository.findByName(ERole.ROLE_USER).get());
@@ -197,7 +197,7 @@ public class UserService implements UserDetailsService {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-               user.getRoles().stream().map(role -> role.getName().toString()).collect(Collectors.toList())
+                user.getRoles().stream().map(role -> role.getName().toString()).collect(Collectors.toList())
         ));
     }
 
