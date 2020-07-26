@@ -1,12 +1,21 @@
 package com.fanfiction.DTO;
 
 public class ChapterDTO {
-    private String imgUrl;
-    private String text;
     private String name;
-    private Long compositionId;
+    private String text;
     private Long id;
+    private String imgUrl;
+    private Long compositionId;
     private int chapterNumber;
+
+    public ChapterDTO(String name, String text, Long id, String imgUrl, Long compositionId, int chapterNumber) {
+        this.name = name;
+        this.text = text;
+        this.id = id;
+        this.imgUrl = imgUrl;
+        this.compositionId = compositionId;
+        this.chapterNumber = chapterNumber;
+    }
 
     public Long getId() {
         return id;

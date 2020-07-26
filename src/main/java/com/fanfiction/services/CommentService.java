@@ -23,6 +23,7 @@ public class CommentService {
 
 
     public List<CommentDTO> getCommentsByCompositionId(Long compositionId) {
+
         return commentRepository.findAllByCompositionId(compositionId).stream()
                 .map(comment -> new CommentDTO(comment.getId(),
                         comment.getCommentAuthor(), comment.getText())).sorted((comment1, comment2)

@@ -110,6 +110,8 @@
             <artifactId>hibernate-search-orm</artifactId>
             <version>5.10.9.Final</version>
         </dependency>
+
+
         <!--OAUTH2-->
         <dependency>
             <groupId>com.vk.api</groupId>

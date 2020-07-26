@@ -24,10 +24,7 @@ public class ChapterService {
     private ChapterRepository chapterRepository;
 
 
-    public Chapter saveChapter(ChapterDTO chapterDTO) throws IOException {
-        if (chapterDTO.getName() == null || chapterDTO.getName().equals("")) {
-            return null;
-        }
+    public void saveChapter(ChapterDTO chapterDTO) throws IOException {
         Chapter chapter = new Chapter();
         chapter.setName(chapterDTO.getName());
         chapter.setText(chapterDTO.getText());
@@ -52,7 +49,7 @@ public class ChapterService {
             );
             chapter.setImgUrl(cloudinary.uploader().upload(chapterDTO.getImgUrl(), params).get("secure_url").toString());
         }
-        return chapterRepository.save(chapter);
+        chapterRepository.save(chapter);
     }
 
     public List<Chapter> findAllChaptersByCompositionId(Long compositionId) {

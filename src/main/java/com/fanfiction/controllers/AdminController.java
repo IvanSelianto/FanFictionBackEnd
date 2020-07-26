@@ -1,5 +1,6 @@
 package com.fanfiction.controllers;
 
+import com.fanfiction.DTO.UserAdminBoardDTO;
 import com.fanfiction.models.ERole;
 import com.fanfiction.models.Role;
 import com.fanfiction.models.User;
@@ -20,7 +21,7 @@ public class AdminController {
 
     @GetMapping("/allusers")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<User> getAllUsers() {
+    public List<UserAdminBoardDTO> getAllUsers() {
         return adminService.getAllUsers();
     }
 
