@@ -2,6 +2,7 @@ package com.fanfiction.DTO;
 
 import com.fanfiction.models.User;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class CompositionDTO {
@@ -69,5 +70,22 @@ public class CompositionDTO {
                 ", compositionGenres=" + compositionGenres +
                 ", author=" + author +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        CompositionDTO that = (CompositionDTO) object;
+        return Objects.equals(compositionId, that.compositionId) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(compositionGenres, that.compositionGenres) &&
+                Objects.equals(author, that.author);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(compositionId, title, description, compositionGenres, author);
     }
 }

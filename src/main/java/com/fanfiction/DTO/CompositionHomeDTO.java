@@ -3,6 +3,7 @@ package com.fanfiction.DTO;
 import com.fanfiction.models.Genre;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class CompositionHomeDTO {
@@ -65,5 +66,22 @@ public class CompositionHomeDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        CompositionHomeDTO that = (CompositionHomeDTO) object;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(compositionGenres, that.compositionGenres) &&
+                Objects.equals(publicationDate, that.publicationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, compositionGenres, publicationDate);
     }
 }

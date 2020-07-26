@@ -1,5 +1,7 @@
 package com.fanfiction.DTO;
 
+import java.util.Objects;
+
 public class CompositionProfileDTO {
     private Long compositionId;
     private String title;
@@ -43,5 +45,21 @@ public class CompositionProfileDTO {
 
     public void setChaptersAmount(int chaptersAmount) {
         this.chaptersAmount = chaptersAmount;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        CompositionProfileDTO that = (CompositionProfileDTO) object;
+        return chaptersAmount == that.chaptersAmount &&
+                Objects.equals(compositionId, that.compositionId) &&
+                Objects.equals(title, that.title) &&
+                Objects.equals(description, that.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(compositionId, title, description, chaptersAmount);
     }
 }

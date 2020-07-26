@@ -3,6 +3,8 @@ package com.fanfiction.DTO;
 import com.fanfiction.models.Composition;
 import com.fanfiction.models.User;
 
+import java.util.Objects;
+
 public class CommentDTO {
     private Long id;
     private User commentAuthor;
@@ -55,5 +57,21 @@ public class CommentDTO {
                 ", text='" + text + '\'' +
                 ", compositionDTO=" + compositionDTO +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        CommentDTO that = (CommentDTO) object;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(commentAuthor, that.commentAuthor) &&
+                Objects.equals(text, that.text) &&
+                Objects.equals(compositionDTO, that.compositionDTO);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, commentAuthor, text, compositionDTO);
     }
 }

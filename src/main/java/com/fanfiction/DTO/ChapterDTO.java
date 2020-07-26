@@ -1,5 +1,7 @@
 package com.fanfiction.DTO;
 
+import java.util.Objects;
+
 public class ChapterDTO {
     private String name;
     private String text;
@@ -75,5 +77,23 @@ public class ChapterDTO {
                 ", id=" + id +
                 ", chapterNumber=" + chapterNumber +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        ChapterDTO that = (ChapterDTO) object;
+        return chapterNumber == that.chapterNumber &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(text, that.text) &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(imgUrl, that.imgUrl) &&
+                Objects.equals(compositionId, that.compositionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, text, id, imgUrl, compositionId, chapterNumber);
     }
 }
