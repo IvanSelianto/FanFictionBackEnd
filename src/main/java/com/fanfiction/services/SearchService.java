@@ -45,7 +45,6 @@ public class SearchService {
     private org.apache.lucene.search.Query getQueryForCompositions(FullTextEntityManager fullTextEntityManager, String searchRequest) {
         return getQueryBuilder(Composition.class, fullTextEntityManager).phrase()
                 .onField("title").andField("description")
-
                 .sentence(searchRequest)
                 .createQuery();
     }
